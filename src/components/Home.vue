@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useUserStore } from '../store/user'
+
+const userStore = useUserStore()
 
 const count = ref(0)
 </script>
@@ -13,6 +16,7 @@ const count = ref(0)
       <img src="../assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
+  <div>store Value: {{ userStore.userInfo }}</div>
 
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
