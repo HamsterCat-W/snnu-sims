@@ -27,13 +27,13 @@
   </a-layout>
 </template>
 
-<script setup lang="ts" name="About">
+<script setup lang="ts">
 import { ref } from 'vue'
 import { Message } from '@arco-design/web-vue'
 import { IconHome, IconCalendar } from '@arco-design/web-vue/es/icon'
 
 const collapsed = ref(false)
-const onCollapse = (val, type) => {
+const onCollapse = (val: boolean, type: string) => {
   const content = type === 'responsive' ? '触发响应式收缩' : '点击触发收缩'
   Message.info({
     content,
@@ -41,7 +41,7 @@ const onCollapse = (val, type) => {
   })
   collapsed.value = val
 }
-function onClickMenuItem(key) {
+function onClickMenuItem(key: any) {
   Message.info({ content: `You select ${key}`, showIcon: true })
 }
 </script>
