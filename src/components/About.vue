@@ -1,19 +1,8 @@
 <template>
   <a-layout class="layout-demo">
-    <a-layout-sider
-      theme="dark"
-      breakpoint="lg"
-      :width="220"
-      collapsible
-      :collapsed="collapsed"
-      @collapse="onCollapse"
-    >
+    <a-layout-sider theme="dark" breakpoint="lg" :width="220" collapsible :collapsed="collapsed" @collapse="onCollapse">
       <div class="logo" />
-      <a-menu
-        :defaultOpenKeys="['1']"
-        :defaultSelectedKeys="['0_2']"
-        @menuItemClick="onClickMenuItem"
-      >
+      <a-menu :defaultOpenKeys="['1']" :defaultSelectedKeys="['0_2']" @menuItemClick="onClickMenuItem">
         <a-menu-item key="0_1" disabled>
           <IconHome />
           学生信息
@@ -39,27 +28,27 @@
 </template>
 
 <script setup lang="ts" name="About">
-import { ref } from "vue";
-import { Message } from "@arco-design/web-vue";
-import { IconHome, IconCalendar } from "@arco-design/web-vue/es/icon";
+import { ref } from 'vue'
+import { Message } from '@arco-design/web-vue'
+import { IconHome, IconCalendar } from '@arco-design/web-vue/es/icon'
 
-const collapsed = ref(false);
+const collapsed = ref(false)
 const onCollapse = (val, type) => {
-  const content = type === "responsive" ? "触发响应式收缩" : "点击触发收缩";
+  const content = type === 'responsive' ? '触发响应式收缩' : '点击触发收缩'
   Message.info({
     content,
-    duration: 2000,
-  });
-  collapsed.value = val;
-};
+    duration: 2000
+  })
+  collapsed.value = val
+}
 function onClickMenuItem(key) {
-  Message.info({ content: `You select ${key}`, showIcon: true });
+  Message.info({ content: `You select ${key}`, showIcon: true })
 }
 </script>
 
 <style scoped>
 .layout-demo {
-  height: 500px;
+  height: 100%;
   background: var(--color-fill-2);
   border: 1px solid var(--color-border);
 }
