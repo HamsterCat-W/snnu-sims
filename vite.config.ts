@@ -16,5 +16,17 @@ export default defineConfig({
       ],
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/]
     })
-  ]
+  ],
+  resolve: {
+    alias: {
+      '@': './src'
+    }
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true
+      }
+    }
+  }
 })

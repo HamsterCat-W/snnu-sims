@@ -46,7 +46,11 @@ function onClickMenuItem(key: any) {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
+.title {
+  color: var(--page-title-color);
+}
+
 .layout-demo {
   height: 100%;
   background: var(--color-fill-2);
