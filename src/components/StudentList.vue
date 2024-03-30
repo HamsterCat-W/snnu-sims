@@ -1,12 +1,33 @@
 <template>
   <div>
-    <a-input-search
-      style="width: 320px"
-      placeholder="请输入查询条件"
-      search-button
-    />
-    <!-- 显示全部 添加 导入excel<a-upload action="/" @before-upload="beforeUpload" /> -->
-    <!-- 导出excel<a-upload action="/" @before-upload="beforeUpload" /> -->
+    <a-row class="grid-demo">
+      <a-col :span="10">
+        <a-input-search
+          style="width: 320px"
+          placeholder="请输入查询条件"
+          search-button
+        />
+      </a-col>
+      <a-col :span="8" style="text-align: right">
+        <a-button-group type="primary">
+          <a-button type="primary"
+            ><template #icon><icon-select-all /> </template
+            ><template #default>全部</template>
+          </a-button>
+          <a-button
+            ><template #icon><icon-plus /></template
+            ><template #default>添加</template></a-button
+          >
+        </a-button-group>
+      </a-col>
+      <a-button-group type="primary">
+        ><a-upload action="/"></a-upload
+        ><a-button type="primary"
+          ><template #icon><icon-download /> </template
+          ><template #default>下载excel</template>
+        </a-button>
+      </a-button-group>
+    </a-row>
   </div>
   <div>
     <a-table
@@ -47,7 +68,14 @@ import { Student } from "../types/Stu.ts";
 import { useStudentStore } from "../store/useStudentStore";
 import { ref, reactive, onMounted } from "vue";
 // import { Modal } from "@arco-design/web-vue";
-import { IconMore, IconEdit, IconDelete } from "@arco-design/web-vue/es/icon";
+import {
+  IconMore,
+  IconEdit,
+  IconDelete,
+  IconSelectAll,
+  IconPlus,
+  IconDownload,
+} from "@arco-design/web-vue/es/icon";
 import { Pagination } from "@arco-design/web-vue";
 const studentStore = useStudentStore();
 const rowSelection = reactive({
