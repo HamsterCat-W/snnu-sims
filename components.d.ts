@@ -9,8 +9,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     ABreadcrumb: typeof import('@arco-design/web-vue')['Breadcrumb']
     ABreadcrumbItem: typeof import('@arco-design/web-vue')['BreadcrumbItem']
+    AButton: typeof import('@arco-design/web-vue')['Button']
     ACheckbox: typeof import('@arco-design/web-vue')['Checkbox']
     ACheckboxGroup: typeof import('@arco-design/web-vue')['CheckboxGroup']
+    AGrid: typeof import('@arco-design/web-vue')['Grid']
+    AGridItem: typeof import('@arco-design/web-vue')['GridItem']
     AInputSearch: typeof import('@arco-design/web-vue')['InputSearch']
     ALayout: typeof import('@arco-design/web-vue')['Layout']
     ALayoutContent: typeof import('@arco-design/web-vue')['LayoutContent']
@@ -20,11 +23,11 @@ declare module 'vue' {
     AMenu: typeof import('@arco-design/web-vue')['Menu']
     AMenuItem: typeof import('@arco-design/web-vue')['MenuItem']
     APagination: typeof import('@arco-design/web-vue')['Pagination']
+    ATable: typeof import('@arco-design/web-vue')['Table']
     Home: typeof import('./src/components/Home.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StudentInfo: typeof import('./src/components/StudentInfo.vue')['default']
     StudentList: typeof import('./src/components/StudentList.vue')['default']
-    StudentsList: typeof import('./src/components/StudentList.vue')['default']
   }
 }

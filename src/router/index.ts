@@ -7,13 +7,15 @@ const routes: any[] = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    children: [
+      {
+        path: 'students',
+        name: 'stulist',
+        component: StuList
+      }
+    ]
   },
-  {
-    path: '/students',
-    name: 'stulist',
-    component: StuList
-  }
 ]
 
 export default createRouter({

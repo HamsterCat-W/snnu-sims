@@ -1,17 +1,6 @@
-import { ApiService } from "@/service/ApiService.ts";
+// import { ApiService } from "@/service/ApiService.ts";
 import { defineStore } from "pinia";
-import { computed } from "vue";
-
-interface Student {
-  sno: number;
-  name: string;
-  gender: string;
-  birthday: string;
-  mobile: string;
-  email: string;
-  address: string;
-  image?: string | null;
-}
+import { Student } from "../types/Stu.ts";
 
 export const useStudentStore = defineStore({
   id: "students",
@@ -23,16 +12,16 @@ export const useStudentStore = defineStore({
   }),
   actions: {
     //获取学生信息
-    async fetchStudents() {
-      try {
-        //使用ApiService中的get方法获取学生信息列表
-        const students = await ApiService.get<Student[]>("/students");
-        //将获取到的学生信息列表存储到状态中
-        this.setStudents(students);
-      } catch (error) {
-        console.error("获取学生信息失败:", error);
-      }
-    },
+    // async fetchStudents() {
+    //   try {
+    //     //使用ApiService中的get方法获取学生信息列表
+    //     const students = await ApiService.get<Student[]>("/students");
+    //     //将获取到的学生信息列表存储到状态中
+    //     this.setStudents(students);
+    //   } catch (error) {
+    //     console.error("获取学生信息失败:", error);
+    //   }
+    // },
     //设置学生信息列表
     setStudents(students: Student[]) {
       this.students = students;

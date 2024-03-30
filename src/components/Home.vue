@@ -25,13 +25,15 @@
       </a-menu>
     </a-layout-sider>
     <a-layout>
-      <a-layout-header> SNNU SIMS</a-layout-header>
+      <a-layout-header> 陕Star 一学通</a-layout-header>
       <a-layout style="padding: 0 24px">
         <a-breadcrumb :style="{ margin: '16px 0' }">
           <a-breadcrumb-item>首页</a-breadcrumb-item>
           <a-breadcrumb-item> 学生信息 </a-breadcrumb-item>
         </a-breadcrumb>
-        <a-layout-content><router-view></router-view></a-layout-content>
+        <a-layout-content style="position: relative"
+          ><router-view></router-view
+        ></a-layout-content>
         <a-layout-footer></a-layout-footer>
       </a-layout>
     </a-layout>
@@ -95,6 +97,7 @@ function onClickMenuItem(key: any) {
   font-weight: 400;
   font-size: 14px;
   background: var(--color-bg-3);
+  padding: 15px;
 }
 .layout-demo :deep(.arco-layout-footer),
 .layout-demo :deep(.arco-layout-content) {
@@ -104,6 +107,6 @@ function onClickMenuItem(key: any) {
   color: var(--color-white);
   font-size: 16px;
   font-stretch: condensed;
-  text-align: center;
+  // text-align: center;
 }
 </style>
