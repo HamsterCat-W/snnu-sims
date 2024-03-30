@@ -24,7 +24,7 @@
         ><a-upload action="/"></a-upload
         ><a-button type="primary"
           ><template #icon><icon-download /> </template
-          ><template #default>下载excel</template>
+          ><template #default>点击下载</template>
         </a-button>
       </a-button-group>
     </a-row>
@@ -33,19 +33,38 @@
     <a-table
       :columns="columns"
       :data="students"
+      row-key="sno"
       show-empty-tree
       :row-selection="rowSelection"
+      v-model:selectedKeys="selectedKeys"
       style="margin-top: 20px"
+      column-resizable
+      :bordered="{ cell: true }"
     >
       <template #optional="{ record }">
         <div class="button-group">
-          <a-button type="primary" shape="circle" @click="handleMore(record)">
+          <a-button
+            type="primary"
+            shape="circle"
+            size="mini"
+            @click="handleMore(record)"
+          >
             <IconMore />
           </a-button>
-          <a-button type="primary" shape="circle" @click="handleEdit(record)">
+          <a-button
+            type="primary"
+            shape="circle"
+            size="mini"
+            @click="handleEdit(record)"
+          >
             <IconEdit />
           </a-button>
-          <a-button type="primary" shape="circle" @click="handleDelete(record)">
+          <a-button
+            type="primary"
+            shape="circle"
+            size="mini"
+            @click="handleDelete(record)"
+          >
             <IconDelete />
           </a-button>
         </div>
@@ -53,18 +72,31 @@
     </a-table>
   </div>
   <div>
-    批量删除按钮 共（总学生数）条 k条/页 页码 第 页<a-pagination
-      :total="50"
-      show-total
-      show-jumper
-      show-page-size
-    />
+    <a-row class="grid-demo" style="margin-top: 20px">
+      <a-col :span="8" style="text-align: left">
+        <a-button type="primary"
+          ><template #icon><icon-delete /> </template
+          ><template #default>批量删除</template>
+        </a-button></a-col
+      >
+      <a-col :span="16" style="text-align: right">
+        <a-pagination
+          @change="changepage"
+          @page-size-change="changepageSize"
+          :current="current"
+          :total="total"
+          :page-size="pagesize"
+          show-total
+          show-jumper
+          show-page-size
+      /></a-col>
+    </a-row>
   </div>
 </template>
 
 <script setup lang="ts" name="StudentList">
-import { ApiService } from "../service/ApiService.ts";
-import { Student } from "../types/Stu.ts";
+import { ApiService } from "../service/ApiService";
+import { Student } from "../types/Stu";
 import { useStudentStore } from "../store/useStudentStore";
 import { ref, reactive, onMounted } from "vue";
 // import { Modal } from "@arco-design/web-vue";
@@ -78,9 +110,14 @@ import {
 } from "@arco-design/web-vue/es/icon";
 import { Pagination } from "@arco-design/web-vue";
 const studentStore = useStudentStore();
+const selectedKeys = ref(["1", "2"]);
+const total = ref(50);
+const current = ref(1); //当前的页数
+const pagesize = ref(6); //每页条数
 const rowSelection = reactive({
   type: "checkbox",
   showCheckedAll: true,
+  onlyCurrent: false,
 });
 console.log(rowSelection);
 const columns = [
@@ -191,6 +228,14 @@ const handleEdit = (student: any) => {
 const handleDelete = (student: any) => {
   // 使用 student 对象进行删除操作
   console.log("点击了删除按钮，当前学生信息:", student);
+};
+
+const changepage = (page: number) => {
+  current.value = page;
+};
+
+const changepageSize = (psize: number) => {
+  pagesize.value = psize;
 };
 
 onMounted(async () => {
