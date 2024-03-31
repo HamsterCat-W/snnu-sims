@@ -6,11 +6,12 @@
           style="width: 320px"
           placeholder="请输入查询条件"
           search-button
+          :modal-value="searchcondition"
         />
       </a-col>
       <a-col :span="8" style="text-align: right">
         <a-button-group type="primary">
-          <a-button type="primary"
+          <a-button type="primary" @click="Allselect"
             ><template #icon><icon-select-all /> </template
             ><template #default>全部</template>
           </a-button>
@@ -32,13 +33,15 @@
   <div>
     <a-table
       :columns="columns"
-      :data="students"
+      :data="studentStore.students"
       row-key="sno"
       show-empty-tree
       :row-selection="rowSelection"
-      v-model:selectedKeys="selectedKeys"
+
       style="margin-top: 20px"
       column-resizable
+      :pageSize="pagesize"
+      @page-size-change="changepageSize"
       :bordered="{ cell: true }"
     >
       <template #optional="{ record }">
@@ -49,7 +52,7 @@
             size="mini"
             @click="handleMore(record)"
           >
-            <IconMore />
+            <IconMore/>
           </a-button>
           <a-button
             type="primary"
@@ -57,7 +60,7 @@
             size="mini"
             @click="handleEdit(record)"
           >
-            <IconEdit />
+            <IconEdit/>
           </a-button>
           <a-button
             type="primary"
@@ -65,11 +68,20 @@
             size="mini"
             @click="handleDelete(record)"
           >
-            <IconDelete />
+            <IconDelete/>
           </a-button>
         </div>
       </template>
     </a-table>
+    <!-- 渲染模态框组件 -->
+    <StudentInfo
+      :visible="visible"
+      :title="title"
+      :width = "800"
+      :student = "selectedStudent"
+      @cancel="handleCancelModal"
+      @before-ok="handleBeforeOkModal"
+    />
   </div>
   <div>
     <a-row class="grid-demo" style="margin-top: 20px">
@@ -86,6 +98,7 @@
           :current="current"
           :total="total"
           :page-size="pagesize"
+          :page-size-options="[5, 10, 15]"
           show-total
           show-jumper
           show-page-size
@@ -109,17 +122,31 @@ import {
   IconDownload,
 } from "@arco-design/web-vue/es/icon";
 import { Pagination } from "@arco-design/web-vue";
+import StudentInfo from "./StudentInfo.vue";
+onMounted(() => getStudentList());
+
 const studentStore = useStudentStore();
-const selectedKeys = ref(["1", "2"]);
-const total = ref(50);
-const current = ref(1); //当前的页数
-const pagesize = ref(6); //每页条数
+// 是否加载完毕（未使用）
+const loading = ref(true);
+
+//搜索条件
+const searchcondition = ref("");
+
+//总学生数
+let total = ref(studentStore.students.length);
+let current = ref(1); //当前的页数
+let pagesize = ref(10); //每页条数
+
+//行选择器
 const rowSelection = reactive({
+  //复选框
   type: "checkbox",
+  //是否显示全选按钮
   showCheckedAll: true,
+  //只能选一条
   onlyCurrent: false,
 });
-console.log(rowSelection);
+//表头属性
 const columns = [
   {
     title: "学号",
@@ -161,68 +188,44 @@ const columns = [
     slotName: "optional",
   },
 ];
-studentStore.setStudents([
-  {
-    sno: 9,
-    name: "吴宇航",
-    gender: "男",
-    birthday: "2003-04-07",
-    mobile: "7890123456",
-    email: "wuyuhang@example.com",
-    address: "杭州市西湖区",
-    image: null,
-  },
-  {
-    sno: 10,
-    name: "顾梦琪",
-    gender: "女",
-    birthday: "2001-12-20",
-    mobile: "9012345678",
-    email: "gumengqi@example.com",
-    address: "杭州市拱墅区",
-    image: null,
-  },
-  {
-    sno: 11,
-    name: "唐天翔",
-    gender: "男",
-    birthday: "2000-06-10",
-    mobile: "3456789012",
-    email: "tangtianxiang@example.com",
-    address: "南京市玄武区",
-    image: null,
-  },
-  {
-    sno: 12,
-    name: "孙怡涵",
-    gender: "女",
-    birthday: "1999-02-18",
-    mobile: "6789012345",
-    email: "sunyihan@example.com",
-    address: "南京市鼓楼区",
-    image: null,
-  },
-  {
-    sno: 13,
-    name: "周泽宇",
-    gender: "男",
-    birthday: "2002-10-25",
-    mobile: "9012345678",
-    email: "zhouzeyu@example.com",
-    address: "武汉市江汉区",
-    image: null,
-  },
-]);
-const students = studentStore.students;
 
+//控制modal弹出框
+const visible = ref(false);
+//弹出框的标题
+const title = ref("");
+//选中的行学生信息
+const selectedStudent = ref({});
+
+const Allselect = () => {
+  // snoset.value = students.value.map((stu) => stu.sno);
+  // selectedKeys = snoset.value;
+};
 const handleMore = (student: any) => {
+  title.value = "查看信息";
+  selectedStudent.value = student;
+  visible.value = true;
   // 使用 student 对象进行更多操作
   console.log("点击了更多按钮，当前学生信息:", student);
+  studentStore.setCurrentStudent(student);
 };
 
 const handleEdit = (student: any) => {
   // 使用 student 对象进行编辑操作
+  title.value = "修改信息";
+  selectedStudent.value = student;
+  visible.value = true;
+
   console.log("点击了编辑按钮，当前学生信息:", student);
+  studentStore.setCurrentStudent(student);
+};
+
+const handleCancelModal = () => {
+  visible.value = false;
+};
+
+const handleBeforeOkModal = () => {
+  // 模态框确定前的操作，比如表单验证
+  // 返回 true 表示允许关闭模态框，返回 false 表示阻止关闭
 };
 
 const handleDelete = (student: any) => {
@@ -234,20 +237,51 @@ const changepage = (page: number) => {
   current.value = page;
 };
 
-const changepageSize = (psize: number) => {
-  pagesize.value = psize;
+const changepageSize = (newPageSize: number) => {
+  console.log("New page size:", newPageSize);
+  pagesize.value = newPageSize;
+  // 在这里可以进行相应的操作，例如重新获取数据等
 };
 
-onMounted(async () => {
+// 在组件挂载后获取数据
+const getStudentList = async () => {
   try {
-    //使用ApiService中的get方法获取学生信息列表
-    const students = await ApiService.get<Student[]>("/students");
-    //将获取到的学生信息列表存储到状态中
-    studentStore.setStudents(students);
+    // 发送 GET 请求获取学生数据
+    const data: Student[] = await ApiService.get<Student[]>("students/");
+    console.log(data);
+    loading.value = false; // 数据加载完成，loading 状态设为 false
+    studentStore.setStudents(data);
   } catch (error) {
-    console.error("获取学生信息失败:", error);
+    console.error("Error:", error);
+    loading.value = false; // 出现错误，loading 状态设为 false
   }
-});
+};
+
+//成功请求
+// const baseURL = "http://192.168.80.1:8000/";
+// () => {
+//   axios
+//     .get(baseURL + "students/")
+//     .then(function (res) {
+//       console.log(res);
+//     })
+//     .catch(function (err) {
+//       console.log(err);
+//     });
+// };
+
+//成功
+// onMounted(async () => {
+//   axios
+//     .get(baseURL + "students/")
+//     .then(function (res) {
+//       console.log(res);
+//     })
+//     .catch(function (err) {
+//       console.log(err);
+//     });
+// });
+
 // const beforeUpload = (file) => {
 //   return new Promise((resolve, reject) => {
 //     Modal.confirm({
@@ -258,27 +292,6 @@ onMounted(async () => {
 //     });
 //   });
 // };
-
-// interface Student {
-//   sno: number;
-//   name: string;
-//   gender: string;
-//   birthday: string;
-//   mobile: string;
-//   email: string;
-//   address: string;
-//   image?: string | null;
-// }
-// import { ApiService } from "@/service/ApiService.ts";
-
-// async fetchStudents() {
-//       try {
-//         //使用ApiService中的get方法获取学生信息列表
-//         const students = await ApiService.get<Student[]>("/students");
-//       } catch (error) {
-//         console.error("获取学生信息失败:", error);
-//       }
-//     }
 </script>
 <style scoped lang="less">
 .button-group {

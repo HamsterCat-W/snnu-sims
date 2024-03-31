@@ -103,7 +103,7 @@ function onClickMenuItem(key: any) {
 .layout-demo :deep(.arco-layout-content) {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   color: var(--color-white);
   font-size: 16px;
   font-stretch: condensed;
